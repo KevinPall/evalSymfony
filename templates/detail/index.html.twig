@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Gîte{{ gite.nom }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="text-center">Details du Gîte :
+			{{ gite.nom }}</h1>
+
+		<div class="row mt-4">
+			<div class="col-md-6">
+				<h2>Informations</h2>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<strong>Ville :</strong>
+						{{ gite.ville }}
+					</li>
+					<li class="list-group-item">
+						<strong>Région :</strong>
+						{{ gite.region }}
+					</li>
+					<li class="list-group-item">
+						<strong>Departement :</strong>
+						{{ gite.departement }}
+					</li>
+					<li class="list-group-item">
+						<strong>Code Postale :</strong>
+						{{ gite.codePostal }}
+					</li>
+					<li class="list-group-item">
+						<strong>Surface Habitable :</strong>
+						{{ gite.surfaceHabitable }}m²
+					</li>
+					<li class="list-group-item">
+						<strong>Nombre de chambres :</strong>
+						{{ gite.nombreChambres }}
+					</li>
+					<li class="list-group-item">
+						<strong>Nombre de couchage :</strong>
+						{{ gite.nombreCouchages }}
+					</li>
+					<li class="list-group-item">
+						<strong>Animaux autorisés :</strong>
+						{{ gite.accepteAnimaux ? 'Oui' : 'Non' }}
+					</li>
+					{% if gite.accepteAnimaux and gite.tarifAnimaux is not null %}
+						<li class="list-group-item">
+							<strong>Tarif pour les Animaux :</strong>
+							{{ gite.tarifAnimaux }}€
+						</li>
+					{% endif %}
+					<!-- Ajoutez d'autres informations ici -->
+				</ul>
+			</div>
+			<div class="col-md-6">
+				<h2>Propriétaire</h2>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<strong>Nom du propriétaire :</strong>
+						{{ gite.proprietaire.nom }}
+					</li>
+					<li class="list-group-item">
+						<strong>Prénom du propriétaire :</strong>
+						{{ gite.proprietaire.prenom }}
+					</li>
+					<li class="list-group-item">
+						<strong>Téléphone du propriétaire :</strong>
+						{{ gite.proprietaire.telephone }}
+					</li>
+					<li class="list-group-item">
+						<strong>Disponibilités du proprietaire :</strong>
+						{{ gite.proprietaire.disponibilités }}
+					</li>
+					<!-- Ajoutez d'autres informations du propriétaire ici -->
+				</ul>
+			</div>
+		</div>
+
+		<div class="row mt-4">
+			<div class="col-md-12">
+				<h2>Équipements</h2>
+				<ul class="list-group">
+					{% for equipement in gite.equipements %}
+						<li class="list-group-item">
+							<strong>Lave Vaisselle :</strong>
+							{{ equipement.laveVaisselle ? 'Oui' : 'Non' }}
+						</li>
+						<li class="list-group-item">
+							<strong>Lave Linge :</strong>
+							{{ equipement.laveLinge ? 'Oui' : 'Non'  }}
+						</li>
+						<li class="list-group-item">
+							<strong>Climatisation :</strong>
+							{{ equipement.climatisation ? 'Oui' : 'Non'  }}
+						</li>
+						<li class="list-group-item">
+							<strong>Télévision :</strong>
+							{{ equipement.television ? 'Oui' : 'Non'  }}
+						</li>
+						<li class="list-group-item">
+							<strong>Terrasse :</strong>
+							{{ equipement.terrasse ? 'Oui' : 'Non'  }}
+						</li>
+						<li class="list-group-item">
+							<strong>Barbecue :</strong>
+							{{ equipement.barbecue ? 'Oui' : 'Non'  }}
+						</li>
+						<li class="list-group-item">
+							<strong>Piscine :</strong>
+							{% if equipement.piscine == 0 %}
+								Pas de piscine
+							{% elseif equipement.piscine == 1 %}
+								Piscine partagée
+							{% elseif equipement.piscine == 2 %}
+								Piscine privée
+							{% else %}
+								Non spécifié
+							{% endif %}
+						</li>
+						<li class="list-group-item">
+							<strong>Terrain de tennis :</strong>
+							{{ equipement.tennis ? 'Oui' : 'Non'  }}
+						</li>
+						<li class="list-group-item">
+							<strong>Table de ping-pong :</strong>
+							{{ equipement.pingPong ? 'Oui' : 'Non'  }}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="row mt-4">
+			<div class="col-md-12">
+				<h2>Services</h2>
+				<ul class="list-group">
+					{% for service in gite.services %}
+						<li class="list-group-item">
+							<strong>Location de linge :</strong>
+							{{ service.locationLinge ? 'Disponible' : 'Non disponible'  }}
+						</li>
+						<li class="list-group-item">
+							<strong>Prix pour la location de linge :</strong>
+							{{ service.locationLingePrix }}€
+						</li>
+						<li class="list-group-item">
+							<strong>Menage fin de sejour :</strong>
+							{{ service.menageFin ? 'Disponible' : 'Non disponible'   }}
+						</li>
+						<li class="list-group-item">
+							<strong>Prix pour menage de fin de sejour :</strong>
+							{{ service.menageFinPrix }}€
+						</li>
+						<li class="list-group-item">
+							<strong>Internet :</strong>
+							{{ service.internet ? 'Offert' : 'Non disponible'   }}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+
+		</div>
+
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h2 class="mb-3">Tarifs</h2>
+        {% if tarifs is not empty %}
+            <ul class="list-group">
+                {% for tarif in tarifs %}
+                    <li class="list-group-item">
+						Periode : {{tarif.periode}}<br>
+                        Date : {{ tarif.debutPeriode|date('Y-m-d') }} - {{ tarif.finPeriode|date('Y-m-d') }}<br>
+                        Prix : {{ tarif.prix }}€ par semaine
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">Aucun tarif disponible pour ce gîte.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+		<div class="row mt-4">
+			<div class="col-md-12 text-center">
+				<a href="{{ path('home') }}" class="btn btn-success">Retour à l'accueil</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

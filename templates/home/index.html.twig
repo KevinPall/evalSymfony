@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block title %}Bienvenue sur notre site
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="text-center">Bienvenue sur notre site !</h1>
+
+		<div class="row">
+			<div class="col-lg-8">
+				{% if gites is not empty %}
+					<h2 class="mt-4 mb-3">Nos Gîtes :</h2>
+					<div class="row">
+						{% for gite in gites %}
+							<div class="col-md-6 col-lg-4 mb-4">
+								<div class="card d-flex align-items-center justify-content-center main-card">
+									<div class="card-body text-center">
+										<h5 class="card-title">{{ gite.nom }}</h5>
+										{% if gite.photo %}
+											<img src="{{ asset('uploads/gite_photos/' ~ gite.photo) }}" class="card-img-top img-card" alt="{{ gite.nom }}">
+											{% else %}
+											<img src="{{ asset('assets/img/aucune-photo.jpg') }}" alt="nopics" class="img-card">
+										{% endif %}
+										<p class="card-text">
+											<strong>Ville :</strong>
+											{{ gite.ville }}<br>
+											<strong>Région :</strong>
+											{{ gite.region }}<br>
+											<strong>Departement :</strong>
+											{{ gite.departement }}<br>
+											<strong>Code Postale :</strong>
+											{{ gite.codePostal }}<br>
+											<!-- Ajoutez d'autres informations ici -->
+										</p>
+										<a href="{{ path('app_gite_detail', {'id': gite.id}) }}" class="btn btn-success btn-detail">Voir les détails</a>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% else %}
+					<p class="mt-3">Aucun gîte ne correspond à votre recherche.</p>
+				{% endif %}
+			</div>
+
+
+			<div class="col-lg-4">
+				<div class="sticky-top" style="top: 20px;">
+					{{ form_start(form) }}
+					<h3 class="mb-3">Recherche</h3>
+					<div class="mb-3">
+						{{ form_row(form.ville, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					<div class="mb-3">
+						{{ form_row(form.region, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					<div class="mb-3">
+						{{ form_row(form.departement, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					<div class="aaa mb-3">
+						{{ form_row(form.equipements, {'attr': {'class': 'form-control'}}) }}
+					</div>
+                    	<div class="mb-3">
+						{{ form_label(form.piscine) }}
+						{{ form_errors(form.piscine) }}
+						{{ form_widget(form.piscine, {'attr': {'class': 'form-control'}}) }}
+					</div>
+					<div class="bbb mb-3">
+						{{ form_row(form.services, {'attr': {'class': 'form-control'}}) }}
+					</div>
+	
+					<button type="submit" class="btn btn-success">Rechercher</button>
+					{{ form_end(form) }}
+					{% for flashMessage in app.flashes('warning') %}
+						<div class="alert alert-warning mt-3" role="alert">
+							{{ flashMessage }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
